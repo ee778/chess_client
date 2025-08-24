@@ -6,6 +6,8 @@
 #include <QNetworkRequest>
 #include <QEventLoop>
 #include "IHttpClient.h"
+
+
 class HttpClient: public IHttpClient
 {
     Q_OBJECT

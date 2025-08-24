@@ -2,6 +2,8 @@
 #define HTTPSERVICE_H
 #include <QObject>
 #include "IHttpClient.h"
+
+const QString URL = "127.0.0.1:8080";  // 后期写在配置文件中
 class HttpService: public QObject
 {
     Q_OBJECT
@@ -9,6 +11,16 @@ public:
     HttpService(IHttpClient *client, QObject *parent = nullptr);
     ~HttpService();
 
+    /**
+     * @brief registerUser 注册用户
+     * @param userName  用户名
+     * @param password  密码
+     * @param async 是否异步
+     */
+    void registerUser(QString &userName, QString &password, bool async = false);
+private slots:
+    void processError(const QString &err);
+    void processFinished(const QByteArray &data);
 private:
     IHttpClient *m_client;
 };

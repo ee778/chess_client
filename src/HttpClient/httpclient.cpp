@@ -6,6 +6,11 @@ HttpClient::HttpClient(QObject *parent)
     initConnect();
 }
 
+HttpClient::~HttpClient()
+{
+
+}
+
 QByteArray HttpClient::get(const QString &url)
 {
     QNetworkRequest request(url);

@@ -11,16 +11,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
 
+find_package(Qt6 REQUIRED COMPONENTS Core)
+
 add_library(HttpClient STATIC
   httpclient.cpp
   httpclient.h
   httpservice.h httpservice.cpp
   IHttpClient.h
   mockhttpclient.h mockhttpclient.cpp
+  messagebuilder.h messagebuilder.cpp
 )
 
 target_link_libraries(HttpClient PRIVATE
   Qt${QT_VERSION_MAJOR}::Core
   Qt${QT_VERSION_MAJOR}::Network)
+target_link_libraries(HttpClient PRIVATE Qt6::Core)
 
 target_compile_definitions(HttpClient PRIVATE HTTPCLIENT_LIBRARY)
