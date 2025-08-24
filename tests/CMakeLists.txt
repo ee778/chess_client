@@ -1,0 +1,4 @@
+if (WITH_TESTS)
+    message(STATUS "Building with tests enabled")
+endif()
+add_subdirectory(WebsocketClientTest)
