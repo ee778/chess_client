@@ -4,6 +4,19 @@
 #include "IHttpClient.h"
 
 const QString URL = "127.0.0.1:8080";  // 后期写在配置文件中
+
+struct ServerData {
+    int type;   // 数据的类型
+    void* data; // 数据指针
+};
+
+struct ServerResult {
+    bool success = false;  // 请求解析成功
+    int code;  // 业务状态码
+    QString message;  // 本次返回的信息
+    ServerData data;  // 具体数据
+};
+
 class HttpService: public QObject
 {
     Q_OBJECT

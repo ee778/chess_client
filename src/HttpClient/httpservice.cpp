@@ -35,5 +35,7 @@ void HttpService::processError(const QString &err)
 
 void HttpService::processFinished(const QByteArray &data)
 {
+    // 处理返回的数据
 
+    // 解析当前返回数据的类型
 }

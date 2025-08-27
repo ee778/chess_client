@@ -3,7 +3,7 @@ project(chess_client VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(QT_MAJOR_VERSION 6)
 option(WITH_TESTS "Build with tests" ON)
 
 # 添加主代码目录
