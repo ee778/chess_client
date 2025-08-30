@@ -19,6 +19,8 @@ add_library(Utils STATIC
   utils.cpp
   utils.h
   cconfig.h cconfig.cpp
+  global.h
+  global.cpp
 )
 
 get_target_property(utils_qt_version Utils QT_MAJOR_VERSION)

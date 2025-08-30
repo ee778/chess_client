@@ -1,6 +1,6 @@
 #include "httpservice.h"
 #include "messagebuilder.h"
-
+#include "messageparser.h"
 HttpService::HttpService(IHttpClient *client, QObject *parent)
     :QObject(parent)
 {
@@ -17,7 +17,7 @@ HttpService::~HttpService()
 void HttpService::registerUser(QString &userName, QString &password, bool async)
 {
     QByteArray byte = MessageBuilder::buildUserRegistrationMessage(userName, password);
-    QString url = URL;
+    QString url = URL + "/api/register";
     if (async)
     {
         m_client->postAsync(url, byte, "application/json");
@@ -36,6 +36,6 @@ void HttpService::processError(const QString &err)
 void HttpService::processFinished(const QByteArray &data)
 {
     // 处理返回的数据
+    4MessageParser::parseServerResponse(data);
 
-    // 解析当前返回数据的类型
 }

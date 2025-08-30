@@ -14,12 +14,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(HttpClientTest tst_httpclienttest.cpp)
+add_executable(HttpClientTest tst_httpclienttest.cpp
+    tst_MessageParser.cpp
+)
 add_test(NAME HttpClientTest COMMAND HttpClientTest)
-target_include_directories(HttpClientTest PRIVATE ../../src/HttpClient)
+target_include_directories(HttpClientTest PRIVATE ../../src/HttpClient
+../../src/Utils)
 
 target_link_libraries(HttpClientTest PRIVATE
     Qt${QT_VERSION_MAJOR}::Test
     HttpClient
+    Utils
     Qt${QT_VERSION_MAJOR}::Network)
 

@@ -24,10 +24,10 @@ add_library(HttpClient STATIC
   messageparser.h messageparser.cpp
 )
 
+target_include_directories(HttpClient PRIVATE ../Utils)
+
 target_link_libraries(HttpClient PRIVATE
   Qt${QT_VERSION_MAJOR}::Core
   Qt${QT_VERSION_MAJOR}::Network)
-target_link_libraries(HttpClient PRIVATE Qt6::Core)
-target_link_libraries(HttpClient PRIVATE Qt6::Core)
 
 target_compile_definitions(HttpClient PRIVATE HTTPCLIENT_LIBRARY)

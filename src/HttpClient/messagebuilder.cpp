@@ -11,7 +11,7 @@ QByteArray MessageBuilder::buildUserRegistrationMessage(const QString &userName,
 
     // 受用QJsonDocument构建JSON消息
     QJsonObject jsonObject;
-    jsonObject["type"] = "1000";
+    jsonObject["type"] = 1000;
     jsonObject["username"] = userName;
     jsonObject["password"] = password;
     QJsonDocument jsonDoc(jsonObject);
