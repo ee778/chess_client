@@ -8,13 +8,14 @@ class TestHttpService: public QObject {
 private slots:
     void testRegisterUserSync() {
         MockHttpClient client;
-        HttpService service(&client);
+        auto service = HttpService::getInstance();
+        service->setHttpClient(&client);
         QSignalSpy spy(&client, &IHttpClient::finished);
 
         // Simulate a synchronous POST request
         QString userName = "admin";
         QString password = "123456";
-        service.registerUser(userName, password, true);
+        service->registerUser(userName, password, true);
 
         QCOMPARE(spy.count(), 1);
     }
@@ -41,7 +42,7 @@ void TestHttpService::testMessageParserSuccess()
     QCOMPARE(result.success, true);
     QCOMPARE(result.code, 200);
     QCOMPARE(result.message, QString("OK"));
-    QCOMPARE(result.serverData.type, 1000);
+    QCOMPARE(result.serverData.type, MessageType::REGISTER);
 }
 
 void TestHttpService::testmessageParserFail()

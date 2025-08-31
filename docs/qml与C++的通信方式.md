@@ -9,9 +9,46 @@ C++ 和 QML 之间的通信方式主要有以下几种：
 这是最直接、最常用的通信方式。通过 `QQmlContext::setContextProperty()`，你可以将一个 C++ 对象的实例暴露给 QML 的根上下文。这样，QML 就可以像访问普通属性一样，直接访问该 C++ 对象的属性、调用其方法以及连接其信号。
 
 - **特点**:
+
   - C++ 对象在 QML 中作为 **单例** 使用。
   - 生命周期由 **C++ 端管理**。
   - **适用场景**: 应用程序的核心逻辑、数据管理器或全局服务。
+  - **QML 导入**：使用 `setContextProperty` 不需要 import 语句
+
+- 示例：
+
+  ```c++
+  int main(int argc, char * argv[]) {
+  	//... 前置初始化
+      QQmlApplicationEngine engine;
+      // 其中的SingletonManager为示例的单例类
+      engine.rootContext()->setContextProperty("singleTonManager", SingletonManager::getInstance());
+      // 也可以使用指针别名 -- 可选
+      engine.rootContext()->setContextProperty("appManager", &SingletonManager::getInstance());
+      
+      // ... 加载main.qml
+      
+      
+  }
+  ```
+
+  ```qml
+  // qml中调用
+  Window{
+  	Component.onCompleted: {
+  		console.log("Singleton appName", singletonManager.appName)
+  	}
+  	Connections {
+  		target: singletonManager
+  		onAppNameChanged: {
+  			console.log("App name changed to: ", singletonManager.appName)
+  		}
+  		onInitiallized: {
+  			console.log("singleton initalized singal received")
+  		}
+  	}
+  }
+  ```
 
 
 
@@ -23,6 +60,8 @@ C++ 和 QML 之间的通信方式主要有以下几种：
   - 在 QML 中可以 **创建多个实例**。
   - 生命周期由 **QML 引擎管理**。
   - **适用场景**: 可复用的 UI 组件、自定义数据模型（如 `QAbstractListModel` 的子类）或任何需要在 QML 中多次实例化的对象。
+
+- 
 
 ### 3. 使用模型/视图编程
 
