@@ -1,13 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import com.chessclient.login 1.0
+//import com.chessclient.login 1.0
 Item {
     width: 600
     height: 400
 
-    LoginServer {
-        id: loginServer
-
+    Connections {
+        target: loginServer
         onLoginSuccess: {
             console.log("登录成功");
             errorLabel.visible =false;
@@ -67,7 +66,7 @@ Item {
                 text: "登录"
 
                 onClicked: {
-                    // 调用C++槽函数
+                    // 调用C++函数
                     loginServer.handleLogin(username.text, usepassword.text)
                 }
             }

@@ -2,7 +2,7 @@
 #define MESSAGEPARSER_H
 
 #include <QObject>
-#include "../Utils/global.h"
+#include "global.h"
 
 struct ServerResult;
 class MessageParser : public QObject

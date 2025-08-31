@@ -2,6 +2,7 @@
 #include "httpservice.h"
 #include <QJsonObject>
 #include <QJsonDocument>
+#include "utils.h"
 MessageParser::MessageParser(QObject *parent)
     : QObject{parent}
 {}
@@ -36,7 +37,7 @@ ServerResult MessageParser::parseServerResponse(const QByteArray &data)
         if (jsonData.contains("type") && jsonData["type"].isDouble())
         {
             int type = jsonData["type"].toInt(0);
-            result.serverData.type = type;
+            result.serverData.type = Utils::MessageTypeConvertFromInt(type);
             ReturnInfo returnInfo = parserServerData(jsonData, type);
             if (type != 0)
             {

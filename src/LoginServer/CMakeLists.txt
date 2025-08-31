@@ -16,6 +16,10 @@ add_library(LoginServer STATIC
   loginserver.h
 )
 
-target_link_libraries(LoginServer PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+#target_include_directories(LoginServer PRIVATE ../HttpClient)
 
+target_include_directories(LoginServer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(LoginServer PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(LoginServer PUBLIC HttpClient)
 target_compile_definitions(LoginServer PRIVATE LOGINSERVER_LIBRARY)
