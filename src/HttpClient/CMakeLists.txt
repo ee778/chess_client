@@ -16,18 +16,28 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 
 add_library(HttpClient STATIC
   httpclient.cpp
-  httpclient.h
-  httpservice.h httpservice.cpp
-  IHttpClient.h
-  mockhttpclient.h mockhttpclient.cpp
-  messagebuilder.h messagebuilder.cpp
-  messageparser.h messageparser.cpp
+  include/httpclient.h
+  include/httpservice.h
+  httpservice.cpp
+  include/IHttpClient.h
+  include/mockhttpclient.h mockhttpclient.cpp
+  include/messagebuilder.h messagebuilder.cpp
+  include/messageparser.h messageparser.cpp
+)
+
+#message("cmake-current-soure-dir:" ${CMAKE_CURRENT_SOURCE_DIR}/../Utils)
+
+# 暴露接口
+target_include_directories(HttpClient PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_link_libraries(HttpClient PRIVATE
   Qt${QT_VERSION_MAJOR}::Core
   Qt${QT_VERSION_MAJOR}::Network)
-target_link_libraries(HttpClient PRIVATE Qt6::Core)
-target_link_libraries(HttpClient PRIVATE Qt6::Core)
 
+# 连接公共库
+target_link_libraries(HttpClient PUBLIC
+  Utils
+)
 target_compile_definitions(HttpClient PRIVATE HTTPCLIENT_LIBRARY)

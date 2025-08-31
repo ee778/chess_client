@@ -29,6 +29,8 @@ private:
     void initConnect();
 private:
     QNetworkAccessManager m_manager;
+    QByteArray m_lastMessage;
+    QString m_errorMessage;
 };
 
 #endif // HTTPCLIENT_H

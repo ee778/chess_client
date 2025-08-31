@@ -1,5 +1,6 @@
 #include "mockhttpclient.h"
-
+#include <QJsonDocument>
+#include <QJsonObject>
 MockHttpClient::MockHttpClient(QObject *parent)
     : IHttpClient{parent}
 {}
@@ -35,7 +36,28 @@ void MockHttpClient::postAsync(const QString &url, const QByteArray &data, const
 
     lastUrl = url;
     lastPostData = data;
-    emit finished(R"("success": true, "message": "Async POST OK")");
+    QJsonDocument jsonData = QJsonDocument::fromJson(data);
+    if (!jsonData.isNull() && jsonData.isObject())
+    {
+        QJsonObject jsonObj = jsonData.object();
+        if (jsonObj.contains("type") && jsonObj["type"].isDouble())
+        {
+            int type = jsonObj["type"].toInt();
+            if (type == 1000)
+            {
+                emit finished(R"({
+                "code": 201,
+                "message": "success",
+                "data" : {
+                    "type": 1000
+                }
+                })");
+                return;
+            }
+        }
+    }
+
+    //emit finished(R"("success": true, "message": "Async POST OK")");
 }
 
 

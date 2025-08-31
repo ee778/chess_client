@@ -1,5 +1,6 @@
 #include "httpclient.h"
 #include <QDebug>
+#include "messagebuilder.h"
 HttpClient::HttpClient(QObject *parent)
     :IHttpClient(parent)
 {
@@ -39,6 +40,7 @@ QByteArray HttpClient::post(const QString &url, const QByteArray &data, const QS
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, contentType);
 
+    qInfo() << "Post to " << url << " Data: " << data.toStdString().c_str();
     QNetworkReply *reply = m_manager.post(request, data);
     QEventLoop loop;
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
@@ -52,6 +54,7 @@ QByteArray HttpClient::post(const QString &url, const QByteArray &data, const QS
     else
     {
         qWarning() << "POST error" << reply->error();
+        response = MessageBuilder::buildResponseErrorMessage(reply->errorString());
     }
 
     reply->deleteLater();
@@ -68,6 +71,7 @@ void HttpClient::postAsync(const QString &url, const QByteArray &data, const QSt
 {
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, Type);
+    qInfo() << "Post Async to " << url << " Data: " << data.toStdString().c_str();
     m_manager.post(request, data);
 }
 
@@ -81,12 +85,17 @@ void HttpClient::onReplyFinished(QNetworkReply *reply)
 {
     if (reply->error() == QNetworkReply::NoError)
     {
-        emit finished(reply->readAll());
+        m_lastMessage = reply->readAll();
+        qInfo() << "HttpClient::onReplyFinished" << m_lastMessage;
 
+        emit finished(m_lastMessage);
     }
     else
     {
-        emit error(reply->errorString());
+        m_errorMessage = reply->errorString();
+        qInfo() << "HttpClient::onReplyFinished" << m_errorMessage;
+
+        emit error(m_errorMessage);
     }
     reply->deleteLater();
 }

@@ -1,0 +1,9 @@
+module chess_client 1.0
+depends QtQuick 2.15
+depends QtQuick.Controls 2.15
+
+Register 1.0 Register.qml
+Login 1.0 Login.qml
+Main 1.0 Main.qml
+MainPage 1.0 MainPage.qml
+MainPageTopNav 1.0 MainpageTopNav.qml
