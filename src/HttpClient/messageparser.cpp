@@ -17,7 +17,7 @@ ServerResult MessageParser::parseServerResponse(const QByteArray &data)
         QJsonObject jsonObj = jsonDoc.object();
         if (jsonObj.contains("code") && jsonObj["code"].isDouble())
         {
-            result.code = jsonObj["code"].toInt(400);
+            result.code = Utils::ResultCodeTypeConvertFromInt(jsonObj["code"].toInt(400));
         }
         else { // 解析失败，提前返回
             return result;
@@ -39,7 +39,7 @@ ServerResult MessageParser::parseServerResponse(const QByteArray &data)
             int type = jsonData["type"].toInt(0);
             result.serverData.type = Utils::MessageTypeConvertFromInt(type);
             ReturnInfo returnInfo = parserServerData(jsonData, type);
-            if (type != 0)
+            if (type != 0 && Utils::ResultCodeTypeIsSuccess(result.code))
             {
                 result.success = returnInfo.success;
             }

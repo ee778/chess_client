@@ -54,7 +54,9 @@ void HttpService::loginUser(const QString &userName, const QString &password, bo
 
 void HttpService::processError(const QString &err)
 {
+    // 会在这里接收到失败的信息
     qInfo() << "HttpService::processError" << err;
+
 }
 
 void HttpService::processFinished(const QByteArray &data)

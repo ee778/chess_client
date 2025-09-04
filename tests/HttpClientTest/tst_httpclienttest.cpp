@@ -40,7 +40,7 @@ void TestHttpService::testMessageParserSuccess()
     })";
     ServerResult result = MessageParser::parseServerResponse(jsonResponse);
     QCOMPARE(result.success, true);
-    QCOMPARE(result.code, 200);
+    QCOMPARE(result.code, ResultCodeType::OK);
     QCOMPARE(result.message, QString("OK"));
     QCOMPARE(result.serverData.type, MessageType::REGISTER);
 }

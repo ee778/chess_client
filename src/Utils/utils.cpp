@@ -14,3 +14,20 @@ MessageType Utils::MessageTypeConvertFromInt(int Type)
         return MessageType::FAILED;
     }
 }
+
+ResultCodeType Utils::ResultCodeTypeConvertFromInt(int code)
+{
+    switch (code)
+    {
+    case 200:
+        return ResultCodeType::OK;
+    case 201:
+        return ResultCodeType::CREATESUCESS;
+    case 400:
+        return ResultCodeType::BADREQUEST;
+    case 401:
+        return ResultCodeType::UNAUTHORIZED;
+    default:
+        return ResultCodeType::BADREQUEST;
+    }
+}

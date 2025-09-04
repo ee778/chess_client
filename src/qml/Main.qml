@@ -18,8 +18,8 @@ Window {
 
     Login {
         id: loginPage
-        anchors.fill: parent
-        visible: falsel
+        //anchors.fill: parent
+        visible: false
 
         onRegisterbtnclicked: {
             intoSucess()
@@ -28,13 +28,13 @@ Window {
 
     MainPage {
         id: mainPage
-        anchors.fill: parent
+        //anchors.fill: parent
         visible: false
     }
 
     Register {
         id: registerPage
-        anchors.fill: parent
+        //anchors.fill: parent
         visible: false
     }
 
@@ -66,9 +66,9 @@ Window {
     }
 
     Connections {
-        target: loginServer
+        target: LoginServer   // 这里使用的是qml上下文，所以需要使用的名字和定义的名称一致，需要区分大小写
 
-        onRegisterSuccess: {
+        function onRegisterSuccess() {
             registerSucess()
         }
     }

@@ -5,14 +5,20 @@ Item {
 
     Connections
     {
-        target: loginServer
-        onRegisterSuccess:
+        target: LoginServer
+        function onRegisterSuccess()
         {
             console.log("received register success signal")
+            registerCannel.enabled = true
+            registerErrorMessage.visible = false
+            registerButton.text = qsTr("注册")
         }
-        onRegisterFailed: {
-            console.log("received register failed signal")
+        function onRegisterFailed(errorMessage) {
+            console.log("received register failed signal", errorMessage)
             registerErrorMessage.text = errorMessage
+            registerErrorMessage.visible = true
+            registerCannel.enabled = true
+            registerButton.text = qsTr("注册")
         }
     }
 
@@ -27,25 +33,44 @@ Item {
     ColumnLayout {
         //width: Math.min(parent.width * 0.85, 350)
         spacing: 50
-        anchors.centerIn: parent
+        anchors.fill: parent
         RowLayout {
             Button {
                 id: registerCannel
+                width: 120
                 text: qsTr("返回")
                 onClicked: registerCannelclicked()
             }
+            // 弹性的item
+            Item {
+                Layout.fillWidth: true
+            }
+
             Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: "注册"
+                text: "注册页面"
                 font.pixelSize: 24
                 font.bold: true
                 color: "#2c3e50"
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+            Item {
+                width: 120
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#f8f8f8"
+                    border.color: "#bdc3c7"
+                }
+
+                //visible: false
             }
         }
 
         ColumnLayout {
             spacing: 14
-
+            Layout.alignment: Qt.AlignHCenter
             Text {
                 text: qsTr("用户名")
                 font.pixelSize: 12
@@ -66,20 +91,21 @@ Item {
                 width: 200
                 height: 40
                 echoMode: TextInput.Password
-                selectByMouse: true
-                background: Rectangle {
-                    implicitHeight: 40
-                    radius: 5
-                    border.color: registerPassword.activeFocus ? "#3498db" : "#bdc3c7"
-                    border.width: 1
-                }
+                // selectByMouse: true
+                // background: Rectangle {
+                //     implicitHeight: 40
+                //     radius: 5
+                //     border.color: registerPassword.activeFocus ? "#3498db" : "#bdc3c7"
+                //     border.width: 1
+                // }
             }
         }
 
         // 错误信息
         Text {
+            Layout.alignment: Qt.AlignCenter
             id: registerErrorMessage
-            color: "e74c3c"
+            color: "#e74c3c"
             font.pixelSize: 12
             visible: false
         }
@@ -88,6 +114,8 @@ Item {
         Button {
             id: registerButton
             text: qsTr("注册")
+            //anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignCenter
             width: 200
             height: 40
             background: Rectangle {
@@ -110,10 +138,15 @@ Item {
                 registerErrorMessage.visible = false
                 registerButton.enabled = false
                 registerButton.text = qsTr("注册中...")
-                //registerWorker.register(registerUserName.text, registerPassword.text)
+                LoginServer.handleResigter(registerUserName.text, registerPassword.text, true)
                 registerCannel.enabled = false
 
             }
+        }
+
+        Item {
+            id: spacer
+            Layout.fillHeight: true
         }
     }
 

@@ -1,5 +1,5 @@
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -51,6 +51,7 @@ target_link_libraries(appchess_client
     WebsocketClient
     Utils
     HttpClient
+    Qt6::QuickControls2
 )
 
 

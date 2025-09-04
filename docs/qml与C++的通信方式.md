@@ -47,6 +47,10 @@ C++ 和 QML 之间的通信方式主要有以下几种：
   			console.log("singleton initalized singal received")
   		}
   	}
+  	// QQmlContext::setContextProperty() 传入的单例调用
+  	Button {
+  		singletonManager.login(usernameField.text, passwordField.text)
+  	}
   }
   ```
 

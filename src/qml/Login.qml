@@ -1,30 +1,37 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 2.15
 //import com.chessclient.login 1.0
 Item {
-    width: 600
-    height: 400
-
+    // width: 600
+    // height: 400
+    //anchors.centerIn: parent
     Connections {
-        target: loginServer
-        onLoginSuccess: {
+        target: LoginServer
+        function onLoginSuccess() {
             console.log("登录成功");
             errorLabel.visible =false;
             logincuessbyqml();
         }
 
         // 处理登录失败的信号
-        onLoginFailed: function(errorMessage) {
+        function onLoginFailed(errorMessage) {
             errorLabel.text = errorMessage;
             errorLabel.visible = true;
         }
     }
-
-    Column {
+    Rectangle {
+        id: bgimage
+        anchors.fill: parent
+        color: "#f0f0f0"
+    }
+    ColumnLayout {
+        //Layout.alignment: Qt.AlignCenter
         anchors.centerIn: parent
         id: column1
         spacing: 5
         TextField {
+            Layout.alignment: Qt.AlignHCenter
             id: username
             width: 200
             height: 40
@@ -37,6 +44,7 @@ Item {
             leftPadding: 10
         }
         TextField {
+            Layout.alignment: Qt.AlignHCenter
             id: usepassword
             width: 200
             height: 40
@@ -48,21 +56,19 @@ Item {
             verticalAlignment: TextInput.AlignVCenter
         }
         Text {
+            Layout.alignment: Qt.AlignHCenter
             id: errorLabel
             visible: false
             text: ""
         }
 
-        Row {
-            anchors.horizontalCenter: column1.horizontalCenter
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
             spacing: 20
             Button {
                 id: loginbutton
                 width: 90
                 height: 40
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                }
                 text: "登录"
 
                 onClicked: {
@@ -74,7 +80,6 @@ Item {
                 id: registerbutton
                 width: 90
                 height: 40
-                anchors.verticalCenter: parent.verticalCenter
                 text: "注册"
                 onClicked: {
                     registerbtnclicked()

@@ -23,6 +23,13 @@ enum class MessageType {
     LOGIN = 1001,
 };
 
+enum class ResultCodeType {
+    OK = 200,   // 请求成功
+    CREATESUCESS = 201, // 创建成功
+    BADREQUEST = 400, // 错误请求
+    UNAUTHORIZED = 401, // 未授权
+};
+
 const QString URL = "http://127.0.0.1:9191";  // 后期写在配置文件中
 
 struct ServerData {
@@ -32,7 +39,7 @@ struct ServerData {
 
 struct ServerResult {
     bool success = false;  // 请求解析成功
-    int code;  // 业务状态码
+    ResultCodeType code;  // 业务状态码
     QString message;  // 本次返回的信息
     ServerData serverData;  // 具体数据
 };

@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <LoginServer/loginserver.h>
 #include "appstartup.h"
 
@@ -16,6 +17,8 @@ int main(int argc, char *argv[])
 
     // 注册C++类到QML
     //qmlRegisterType<LoginServer>("com.chessclient.login", 1, 0, "LoginServer");
+
+    QQuickStyle::setStyle("Fusion");
 
     //使用setContextProperty
     QQmlApplicationEngine engine;
