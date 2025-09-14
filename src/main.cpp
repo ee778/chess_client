@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     // 注册C++类到QML
     //qmlRegisterType<LoginServer>("com.chessclient.login", 1, 0, "LoginServer");
 
-    QQuickStyle::setStyle("Fusion");
+    QQuickStyle::setStyle("Material");
 
     //使用setContextProperty
     QQmlApplicationEngine engine;

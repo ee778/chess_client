@@ -10,9 +10,7 @@ Item {
         //anchors.fill: parent
         width: parent.width
         height: parent.height
-        MainPageTopNav {
-            id: mainPageTopNav
-        }
+
         Item {
             Canvas {
                 id: boardCanvas
@@ -71,15 +69,5 @@ Item {
                 }
             }
         }
-    }
-
-    Component.onCompleted: {
-        mainPageTopNav.mainPageTopNav_back_clicked.connect(slot_mainPageTopVav_back_clicked)
-    }
-
-    signal mainPage_back_signal()
-    function slot_mainPageTopVav_back_clicked() {
-        console.log("reviced function slot_mainPageTopVav_back_clicked")
-        mainPage_back_signal()
     }
 }

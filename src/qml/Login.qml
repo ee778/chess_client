@@ -1,17 +1,20 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 2.15
+import QtQuick.Controls.Material
 //import com.chessclient.login 1.0
 Item {
-    // width: 600
-    // height: 400
-    //anchors.centerIn: parent
+    id: loginpage
+    //让 Login.qml 的 Item 拥有明确的大小，可以根据 ColumnLayout 的内容自动撑开。
+    implicitWidth: column1.implicitWidth
+    implicitHeight: column1.implicitHeight
+
     Connections {
         target: LoginServer
         function onLoginSuccess() {
             console.log("登录成功");
             errorLabel.visible =false;
-            logincuessbyqml();
+            loginpage.logincuessbyqml();
         }
 
         // 处理登录失败的信号
@@ -20,69 +23,61 @@ Item {
             errorLabel.visible = true;
         }
     }
+
     Rectangle {
-        id: bgimage
         anchors.fill: parent
-        color: "#f0f0f0"
+        color: "red"
     }
     ColumnLayout {
-        //Layout.alignment: Qt.AlignCenter
-        anchors.centerIn: parent
+        //anchors.centerIn: parent // 使用这个会导致缩小页面时占用topNav的位置
+        anchors.fill: parent
         id: column1
         spacing: 5
         TextField {
-            Layout.alignment: Qt.AlignHCenter
             id: username
-            width: 200
-            height: 40
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 200
+            Layout.preferredHeight: 40
             placeholderText: "请输入用户名称"
             echoMode: TextInput.Normal
 
             // 样式定制
             font.pixelSize: 14
-            verticalAlignment: TextInput.AlignVCenter
             leftPadding: 10
         }
         TextField {
             Layout.alignment: Qt.AlignHCenter
             id: usepassword
-            width: 200
-            height: 40
+            Layout.preferredWidth: 200
+            Layout.preferredHeight: 40
             placeholderText: "请输入密码"
             echoMode: TextInput.Password
 
             font.pixelSize: 14
             leftPadding: 10
-            verticalAlignment: TextInput.AlignVCenter
         }
-        Text {
-            Layout.alignment: Qt.AlignHCenter
-            id: errorLabel
-            visible: false
-            text: ""
-        }
-
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
             spacing: 20
             Button {
                 id: loginbutton
-                width: 90
-                height: 40
+                Layout.preferredWidth: 90
+                Layout.preferredHeight: 40
+                Material.background: Material.Purple
                 text: "登录"
 
                 onClicked: {
                     // 调用C++函数
-                    loginServer.handleLogin(username.text, usepassword.text)
+                    LoginServer.handleLogin(username.text, usepassword.text)
                 }
             }
             Button {
                 id: registerbutton
-                width: 90
-                height: 40
+                Layout.preferredWidth: 90
+                Layout.preferredHeight: 40
                 text: "注册"
                 onClicked: {
-                    registerbtnclicked()
+                    loginpage.registerbtnclicked();
                 }
             }
         }
