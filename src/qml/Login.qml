@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 2.15
 import QtQuick.Controls.Material
+import "singletons" as Singletons
 //import com.chessclient.login 1.0
 Item {
     id: loginpage
@@ -13,14 +14,13 @@ Item {
         target: LoginServer
         function onLoginSuccess() {
             console.log("登录成功");
-            errorLabel.visible =false;
+            Singletons.GlobalPopup.showSuccess(qsTr("登陆成功"))
             loginpage.logincuessbyqml();
         }
 
         // 处理登录失败的信号
         function onLoginFailed(errorMessage) {
-            errorLabel.text = errorMessage;
-            errorLabel.visible = true;
+            Singletons.GlobalPopup.showError(errorMessage);
         }
     }
 
@@ -67,6 +67,12 @@ Item {
                 text: "登录"
 
                 onClicked: {
+                    if (username.text === "" || usepassword.text === "")
+                    {
+                        Singletons.GlobalPopup.showError("username or password can't not empty!", 1000)
+                        return
+                    }
+
                     // 调用C++函数
                     LoginServer.handleLogin(username.text, usepassword.text)
                 }

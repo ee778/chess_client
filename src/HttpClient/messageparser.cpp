@@ -61,6 +61,22 @@ ReturnInfo MessageParser::parserServerData(QJsonObject &jsonData, int type)
     case 1000: // 用户注册
         returnInfo.success = true;
         break;
+    case 1001: // 用户登录
+    {
+        IData *loginData = new LoginData();
+        if (loginData->fromJson(jsonData))
+        {
+            returnInfo.data = loginData;
+            returnInfo.success = true;
+        }
+        else
+        {
+            delete loginData;
+            returnInfo.data = nullptr;
+            returnInfo.success = false;
+        }
+    }
+        break;
     default:
         break;
     }

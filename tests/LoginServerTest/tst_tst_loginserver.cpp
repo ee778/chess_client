@@ -38,7 +38,7 @@ void tst_LoginServer::test_case1() {
 
     // 随机创建userName和password
 
-    loginServer->handleResigter(testUserName, testPassword, true);
+    loginServer->handleRegister(testUserName, testPassword, true);
 
 
     // 等待信号

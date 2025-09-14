@@ -14,7 +14,7 @@ void LoginServer::handleLogin(const QString &username, const QString &password)
     HttpService::getInstance()->loginUser(username, password);
 }
 
-void LoginServer::handleResigter(const QString &username, const QString &password, bool async)
+void LoginServer::handleRegister(const QString &username, const QString &password, bool async)
 {
     // 调用HttpService的注册接口
     // 开始定时器
@@ -27,6 +27,11 @@ void LoginServer::handleResigter(const QString &username, const QString &passwor
     HttpService::getInstance()->registerUser(username, password, async);
 }
 
+void LoginServer::handleLogout()
+{
+    m_loginStatus = LoginStatus::LOGOUT;
+    HttpService::getInstance()->logoutUser();
+}
 
 LoginServer::LoginServer(QObject *parent)
     :QObject(parent)
@@ -54,7 +59,25 @@ LoginServer::LoginServer(QObject *parent)
             emit registerFailed(result.message);
         }
     });
-
+    connect(HttpService::getInstance(), &HttpService::loginFinished, this, [this](const ServerResult &result) {
+        qInfo() << "LoginServer recevied loginFinished signal" << result.success << result.message;
+        if (result.success)
+        {
+            m_loginStatus = LoginStatus::LOGINED;
+            if (result.serverData.data != nullptr)
+            {
+                auto loginData = dynamic_cast<LoginData*>(result.serverData.data);
+                if (loginData != nullptr)
+                {
+                    m_token = loginData->token;
+                    qInfo() << "Login success, token:" << m_token;
+                }
+            }
+            emit loginSuccess();
+        } else {
+            emit loginFailed(result.message);
+        }
+    });
 }
 
 LoginServer::~LoginServer()

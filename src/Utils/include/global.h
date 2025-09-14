@@ -7,8 +7,26 @@ class QJsonObject;
 #include <QMetaType>
 struct IData
 {
+    /**
+     * @brief fromJson 从json对象中解析数据
+     * 
+     * @param jsonData json对象
+     * @return int -1 解析失败 0 解析成功
+     */
     virtual int fromJson(QJsonObject jsonData) = 0;
 };
+
+struct LoginData: public IData 
+{
+    QString token;  // 登录成功后返回的token
+    int fromJson(QJsonObject jsonData) override;
+};
+
+struct IDataFactory
+{
+    virtual IData* createData() = 0;
+};
+
 
 
 struct ReturnInfo
@@ -30,7 +48,7 @@ enum class ResultCodeType {
     UNAUTHORIZED = 401, // 未授权
 };
 
-const QString URL = "http://127.0.0.1:9191";  // 后期写在配置文件中
+const QString URL = "http://192.168.31.117:9191";  // 后期写在配置文件中
 
 struct ServerData {
     MessageType type = MessageType::FAILED;   // 数据的类型
@@ -44,4 +62,10 @@ struct ServerResult {
     ServerData serverData;  // 具体数据
 };
 Q_DECLARE_METATYPE(ServerResult)
+
+
+enum class LoginStatus {
+    LOGOUT = 0,
+    LOGINED = 1,
+};
 #endif // GLOBAL_H

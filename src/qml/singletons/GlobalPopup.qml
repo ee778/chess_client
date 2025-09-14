@@ -56,24 +56,24 @@ Popup {
 
     }
 
-    function showInfo(text, duration) {
+    function showInfo(text, duration = 1000) {
         popupShow.showType = "normal"
         popupShow.showBase(text, duration)
 
     }
-    function showWarning(text, duration) {
+    function showWarning(text, duration = 1000) {
         popupShow.showType = "warning"
         popupShow.showBase(text, duration)
 
     }
 
-    function showError(text, duration) {
+    function showError(text, duration = 1000) {
         popupShow.showType = "error"
         popupShow.showBase(text, duration)
 
     }
 
-    function showSuccess(text, duration) {
+    function showSuccess(text, duration = 1000) {
         popupShow.showType = "success"
         popupShow.showBase(text, duration)
     }

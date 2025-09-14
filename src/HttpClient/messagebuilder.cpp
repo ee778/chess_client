@@ -20,6 +20,20 @@ QByteArray MessageBuilder::buildUserRegistrationMessage(const QString &userName,
     return message;
 }
 
+QByteArray MessageBuilder::buildUserLoginMessage(const QString &userName, const QString &password)
+{
+    QByteArray message;
+
+    // 受用QJsonDocument构建JSON消息
+    QJsonObject jsonObject;
+    jsonObject["type"] = 1001;
+    jsonObject["username"] = userName;
+    jsonObject["password"] = password;
+    QJsonDocument jsonDoc(jsonObject);
+    message = jsonDoc.toJson(QJsonDocument::Compact);
+    return message;
+}
+
 QByteArray MessageBuilder::buildResponseErrorMessage(const QString &error)
 {
     QByteArray message;

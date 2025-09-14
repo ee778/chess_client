@@ -38,7 +38,7 @@ Item {
         ColumnLayout {
             spacing: 10
             Layout.alignment: Qt.AlignHCenter
-            Text {
+            Label {
                 text: qsTr("用户名")
                 font.pixelSize: 12
             }
@@ -47,7 +47,7 @@ Item {
                 Layout.preferredWidth: 200
                 Layout.preferredHeight: 40
             }
-            Text {
+            Label {
                 text: qsTr("密码")
                 font.pixelSize: 12
             }
@@ -71,13 +71,12 @@ Item {
             onClicked: {
 
                 if (registerUserName.text === "" || registerPassword.text === "") {
-                    // registerErrorMessage.text = qsTr("用户名和密码不能为空")
-                    // registerErrorMessage.visible = true
+
                     return
                 }
                 registerButton.enabled = false
                 registerButton.text = qsTr("注册中...")
-                LoginServer.handleResigter(registerUserName.text, registerPassword.text, true)
+                LoginServer.handleRegister(registerUserName.text, registerPassword.text, true)
                 registerCannel.enabled = false
 
             }

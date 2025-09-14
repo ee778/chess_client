@@ -35,6 +35,10 @@ public:
      * @param async 是否异步
      */
     void loginUser(const QString &userName, const QString &password, bool async = false);
+
+    void logoutUser() {
+        // 目前不需要做任何操作
+    }
 private:
     HttpService(IHttpClient *client, QObject *parent = nullptr);
 private slots:
@@ -42,6 +46,8 @@ private slots:
     void processFinished(const QByteArray &data);
 signals:
     void registerFinished(ServerResult result);
+
+    void loginFinished(ServerResult result);
 private:
     IHttpClient *m_client;
 };
