@@ -33,7 +33,7 @@ ApplicationWindow {
             id: stackView
             //Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            initialItem: loginPage
+            initialItem: gameMainWidget
 
         }
 
@@ -43,7 +43,7 @@ ApplicationWindow {
 
         Login {
             id: loginPage
-            visible: true
+            visible: false
             onRegisterbtnclicked: {
                 root.intoSucess()
             }
@@ -61,7 +61,10 @@ ApplicationWindow {
             //anchors.fill: parent
             visible: false
         }
-
+        GameMainWidget {
+            id: gameMainWidget
+            visible: false
+        }
     }
 
 
