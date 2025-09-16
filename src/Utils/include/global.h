@@ -7,8 +7,26 @@ class QJsonObject;
 #include <QMetaType>
 struct IData
 {
+    /**
+     * @brief fromJson 从json对象中解析数据
+     * 
+     * @param jsonData json对象
+     * @return int -1 解析失败 0 解析成功
+     */
     virtual int fromJson(QJsonObject jsonData) = 0;
 };
+
+struct LoginData: public IData 
+{
+    QString token;  // 登录成功后返回的token
+    int fromJson(QJsonObject jsonData) override;
+};
+
+struct IDataFactory
+{
+    virtual IData* createData() = 0;
+};
+
 
 
 struct ReturnInfo
@@ -23,7 +41,14 @@ enum class MessageType {
     LOGIN = 1001,
 };
 
-const QString URL = "http://127.0.0.1:9191";  // 后期写在配置文件中
+enum class ResultCodeType {
+    OK = 200,   // 请求成功
+    CREATESUCESS = 201, // 创建成功
+    BADREQUEST = 400, // 错误请求
+    UNAUTHORIZED = 401, // 未授权
+};
+
+const QString URL = "http://192.168.31.117:9191";  // 后期写在配置文件中
 
 struct ServerData {
     MessageType type = MessageType::FAILED;   // 数据的类型
@@ -32,9 +57,15 @@ struct ServerData {
 
 struct ServerResult {
     bool success = false;  // 请求解析成功
-    int code;  // 业务状态码
+    ResultCodeType code;  // 业务状态码
     QString message;  // 本次返回的信息
     ServerData serverData;  // 具体数据
 };
 Q_DECLARE_METATYPE(ServerResult)
+
+
+enum class LoginStatus {
+    LOGOUT = 0,
+    LOGINED = 1,
+};
 #endif // GLOBAL_H

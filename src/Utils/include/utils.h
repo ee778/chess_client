@@ -12,6 +12,12 @@ public:
      * @return
      */
     static MessageType MessageTypeConvertFromInt(int Type);
+
+    static ResultCodeType ResultCodeTypeConvertFromInt(int code);
+
+    static bool ResultCodeTypeIsSuccess(ResultCodeType code) {
+        return code == ResultCodeType::OK || code == ResultCodeType::CREATESUCESS;
+    }
 };
 
 #endif // UTILS_H

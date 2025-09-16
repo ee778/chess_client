@@ -54,7 +54,11 @@ QByteArray HttpClient::post(const QString &url, const QByteArray &data, const QS
     else
     {
         qWarning() << "POST error" << reply->error();
-        response = MessageBuilder::buildResponseErrorMessage(reply->errorString());
+        response = reply->readAll();
+        if (response.size() == 0)
+        {
+            response = MessageBuilder::buildResponseErrorMessage(reply->errorString());
+        }
     }
 
     reply->deleteLater();
@@ -95,7 +99,14 @@ void HttpClient::onReplyFinished(QNetworkReply *reply)
         m_errorMessage = reply->errorString();
         qInfo() << "HttpClient::onReplyFinished" << m_errorMessage;
 
-        emit error(m_errorMessage);
+        // 先尝试解析错误信息
+
+        QByteArray response = reply->readAll();
+        if (response.size() == 0)
+        {
+            response = MessageBuilder::buildResponseErrorMessage(reply->errorString());
+        }
+        emit finished(response);
     }
     reply->deleteLater();
 }

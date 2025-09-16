@@ -49,11 +49,23 @@ void HttpService::registerUser(const QString &userName, const QString &password,
 
 void HttpService::loginUser(const QString &userName, const QString &password, bool async)
 {
-
+    QByteArray byte = MessageBuilder::buildUserLoginMessage(userName, password);
+    QString url = URL + "/api/login";
+    if (async)
+    {
+        m_client->postAsync(url, byte, "application/json");
+    }
+    else
+    {
+        auto data = m_client->post(url, byte, "application/json");
+        ServerResult result = MessageParser::parseServerResponse(data);
+        emit loginFinished(result);
+    }
 }
 
 void HttpService::processError(const QString &err)
 {
+    // 会在这里接收到失败的信息
     qInfo() << "HttpService::processError" << err;
 }
 
@@ -67,5 +79,9 @@ void HttpService::processFinished(const QByteArray &data)
         qInfo() << "emit registerFinished";
         emit registerFinished(result);
     }
-
+    else if (result.serverData.type == MessageType::LOGIN)
+    {
+        qInfo() << "emit loginFinished";
+        emit loginFinished(result);
+    }
 }

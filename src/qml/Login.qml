@@ -1,83 +1,89 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 2.15
+import QtQuick.Controls.Material
+import "singletons" as Singletons
 //import com.chessclient.login 1.0
 Item {
-    width: 600
-    height: 400
+    id: loginpage
+    //让 Login.qml 的 Item 拥有明确的大小，可以根据 ColumnLayout 的内容自动撑开。
+    implicitWidth: column1.implicitWidth
+    implicitHeight: column1.implicitHeight
 
     Connections {
-        target: loginServer
-        onLoginSuccess: {
+        target: LoginServer
+        function onLoginSuccess() {
             console.log("登录成功");
-            errorLabel.visible =false;
-            logincuessbyqml();
+            Singletons.GlobalPopup.showSuccess(qsTr("登陆成功"))
+            loginpage.logincuessbyqml();
         }
 
         // 处理登录失败的信号
-        onLoginFailed: function(errorMessage) {
-            errorLabel.text = errorMessage;
-            errorLabel.visible = true;
+        function onLoginFailed(errorMessage) {
+            Singletons.GlobalPopup.showError(errorMessage);
         }
     }
 
-    Column {
-        anchors.centerIn: parent
+    Rectangle {
+        anchors.fill: parent
+        color: "red"
+    }
+    ColumnLayout {
+        //anchors.centerIn: parent // 使用这个会导致缩小页面时占用topNav的位置
+        anchors.fill: parent
         id: column1
         spacing: 5
         TextField {
             id: username
-            width: 200
-            height: 40
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 200
+            Layout.preferredHeight: 40
             placeholderText: "请输入用户名称"
             echoMode: TextInput.Normal
 
             // 样式定制
             font.pixelSize: 14
-            verticalAlignment: TextInput.AlignVCenter
             leftPadding: 10
         }
         TextField {
+            Layout.alignment: Qt.AlignHCenter
             id: usepassword
-            width: 200
-            height: 40
+            Layout.preferredWidth: 200
+            Layout.preferredHeight: 40
             placeholderText: "请输入密码"
             echoMode: TextInput.Password
 
             font.pixelSize: 14
             leftPadding: 10
-            verticalAlignment: TextInput.AlignVCenter
         }
-        Text {
-            id: errorLabel
-            visible: false
-            text: ""
-        }
-
-        Row {
-            anchors.horizontalCenter: column1.horizontalCenter
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
             spacing: 20
             Button {
                 id: loginbutton
-                width: 90
-                height: 40
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                }
+                Layout.preferredWidth: 90
+                Layout.preferredHeight: 40
+                Material.background: Material.Purple
                 text: "登录"
 
                 onClicked: {
+                    if (username.text === "" || usepassword.text === "")
+                    {
+                        Singletons.GlobalPopup.showError("username or password can't not empty!", 1000)
+                        return
+                    }
+
                     // 调用C++函数
-                    loginServer.handleLogin(username.text, usepassword.text)
+                    LoginServer.handleLogin(username.text, usepassword.text)
                 }
             }
             Button {
                 id: registerbutton
-                width: 90
-                height: 40
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.preferredWidth: 90
+                Layout.preferredHeight: 40
                 text: "注册"
                 onClicked: {
-                    registerbtnclicked()
+                    loginpage.registerbtnclicked();
                 }
             }
         }

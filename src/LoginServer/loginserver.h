@@ -1,7 +1,7 @@
 #ifndef LOGINSERVER_H
 #define LOGINSERVER_H
 #include <QObject>
-
+#include "global.h"
 class QTimer;
 class LoginServer: public QObject
 {
@@ -11,6 +11,7 @@ public:
 
     ~LoginServer();
 
+    LoginStatus getLoginStatus() const { return m_loginStatus; }
 private:
     explicit LoginServer(QObject *parent = nullptr);
     LoginServer(LoginServer &) = delete;
@@ -18,7 +19,9 @@ private:
 public slots:
     void handleLogin(const QString &username, const QString &password);
 
-    void handleResigter(const QString &username, const QString &password, bool async = false);
+    void handleRegister(const QString &username, const QString &password, bool async = false);
+
+    void handleLogout();
 signals:
     void loginSuccess();
     void loginFailed(const QString &errorMessage);
@@ -28,6 +31,8 @@ signals:
 private:
     QTimer *loginTimer = nullptr;
     QTimer *registerTimer = nullptr;
+    LoginStatus m_loginStatus = LoginStatus::LOGOUT;
+    QString m_token; // 登录成功后的token
 };
 
 #endif // LOGINSERVER_H
