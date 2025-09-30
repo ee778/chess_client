@@ -14,6 +14,7 @@ struct IData
      * @return int -1 解析失败 0 解析成功
      */
     virtual int fromJson(QJsonObject jsonData) = 0;
+    virtual ~IData(){}
 };
 
 struct LoginData: public IData 
@@ -69,3 +70,4 @@ enum class LoginStatus {
     LOGINED = 1,
 };
 #endif // GLOBAL_H
+

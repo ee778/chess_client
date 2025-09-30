@@ -46,6 +46,7 @@ add_subdirectory(DbServer)
 add_subdirectory(WebsocketClient)
 add_subdirectory(Utils)
 add_subdirectory(HttpClient)
+add_subdirectory(GameService)
 
 target_link_libraries(appchess_client
     PRIVATE Qt6::Quick
